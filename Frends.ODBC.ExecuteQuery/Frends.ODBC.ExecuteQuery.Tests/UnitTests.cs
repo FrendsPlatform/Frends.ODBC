@@ -30,7 +30,7 @@ public class UnitTests
     [TestMethod]
     public async Task ShouldReadFromMsAccessViaOdbc_ExecuteTypes_Auto()
     {
-        var input = new Input
+        var input = new Input 
         {
             ConnectionString = _connString,
             ExecuteType = ExecuteTypes.Auto,
