@@ -45,7 +45,7 @@ public class UnitTests
         };
 
         var result = await ODBC.ExecuteQuery(input, options, default);
-
+         
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Success);
         Assert.AreEqual(-1, result.RecordsAffected);

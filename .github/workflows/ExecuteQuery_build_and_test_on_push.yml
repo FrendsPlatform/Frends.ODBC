@@ -13,7 +13,7 @@ jobs:
     uses: FrendsPlatform/FrendsTasks/.github/workflows/build_test.yml@main
     with:
       workdir: Frends.ODBC.ExecuteQuery
-      prebuild_command: Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "64-bit" -SetPropertyValue 'Dbq=./Frends.ODBC.ExecuteQuery.Tests\TestFiles\ODBC_testDB.accdb'
+      prebuild_command: Invoke-WebRequest -Uri "https://www.microsoft.com/en-us/download/details.aspx?id=54920" -OutFile "./Frends.ODBC.ExecuteQuery.Tests\TestFiles\AccessDatabaseEngine_X64.exe" && Start-Process -FilePath "./Frends.ODBC.ExecuteQuery.Tests\TestFiles\AccessDatabaseEngine_X64.exe" -ArgumentList "/passive" -Wait && Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "64-bit" -SetPropertyValue 'Dbq=./Frends.ODBC.ExecuteQuery.Tests\TestFiles\ODBC_testDB.accdb'
     secrets:
       badge_service_api_key: ${{ secrets.BADGE_SERVICE_API_KEY }}
       test_feed_api_key: ${{ secrets.TASKS_TEST_FEED_API_KEY }}
