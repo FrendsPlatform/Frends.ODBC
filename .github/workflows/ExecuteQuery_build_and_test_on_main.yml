@@ -1,0 +1,18 @@
+name: ExecuteQuery build main
+
+on:
+  push:
+    branches:    
+      - main
+    paths:
+      - 'Frends.ODBC.ExecuteQuery/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: FrendsPlatform/FrendsTasks/.github/workflows/build_main.yml@main
+    with:
+      workdir: Frends.ODBC.ExecuteQuery
+      prebuild_command: Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "64-bit" -SetPropertyValue 'Dbq=./Frends.ODBC.ExecuteQuery.Tests\TestFiles\ODBC_testDB.accdb'
+    secrets:
+      badge_service_api_key: ${{ secrets.BADGE_SERVICE_API_KEY }}
