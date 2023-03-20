@@ -48,8 +48,8 @@ public class ODBC
             command.CommandTimeout = options.CommandTimeoutSeconds;
             command.CommandText = input.Query;
             command.CommandType = CommandType.Text;
-            
-            if(input.ParametersInOrder != null)
+
+            if (input.ParametersInOrder != null)
                 command.Parameters.AddRange(input.ParametersInOrder.Select(x => new OdbcParameter { Value = x.Value }).ToArray());
 
             result = await ExecuteHandler(input, options, command, cancellationToken);
