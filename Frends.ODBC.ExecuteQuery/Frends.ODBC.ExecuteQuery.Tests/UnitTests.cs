@@ -8,6 +8,8 @@ public class UnitTests
 {
     // Create OdbcDsn using PowerShell as admin (check file location):
     //Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "64-bit" -SetPropertyValue "Dbq=$pwd\TestFiles\ODBC_testDB.accdb"
+    // or
+    //Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "32-bit" -SetPropertyValue "Dbq=$pwd\TestFiles\ODBC_testDB_32.mdb"
 
     // Remove
     //Remove-OdbcDsn -Name "ODBC_testDB" -DsnType "User" -Platform "64-bit"
