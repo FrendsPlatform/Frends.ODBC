@@ -30,7 +30,7 @@ public class UnitTests
     [TestMethod]
     public async Task ShouldReadFromMsAccessViaOdbc_ExecuteTypes_Auto()
     {
-        var input = new Input 
+        var input = new Input
         {
             ConnectionString = _connString,
             ExecuteType = ExecuteTypes.Auto,
@@ -45,7 +45,7 @@ public class UnitTests
         };
 
         var result = await ODBC.ExecuteQuery(input, options, default);
-         
+
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Success);
         Assert.AreEqual(-1, result.RecordsAffected);
