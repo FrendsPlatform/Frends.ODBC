@@ -13,6 +13,6 @@ jobs:
     uses: FrendsPlatform/FrendsTasks/.github/workflows/build_main.yml@main
     with:
       workdir: Frends.ODBC.ExecuteQuery
-      prebuild_command: Invoke-WebRequest -Uri https://go.microsoft.com/fwlink/?linkid=2223360 -OutFile $pwd/odbc.msi && Start-Process -Filepath $pwd/odbc.msi -ArgumentList "/qr IACCEPTMSODBCSQLLICENSETERMS=YES" && Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "32-bit" -SetPropertyValue 'Dbq=.\Frends.ODBC.ExecuteQuery.Tests\TestFiles\ODBC_testDB_32.mdb'
+      prebuild_command: Set-ExecutionPolicy RemoteSigned && .\Frends.ODBC.ExecuteQuery.Tests\TestFiles\odbc.ps1
     secrets:
       badge_service_api_key: ${{ secrets.BADGE_SERVICE_API_KEY }}
