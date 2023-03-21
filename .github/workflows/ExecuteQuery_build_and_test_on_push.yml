@@ -13,7 +13,7 @@ jobs:
     uses: FrendsPlatform/FrendsTasks/.github/workflows/build_test.yml@main
     with:
       workdir: Frends.ODBC.ExecuteQuery
-      prebuild_command: (New-Object System.Net.WebClient).DownloadFile('https://download.microsoft.com/download/2/4/3/24375141-E08D-4803-AB0E-10F2E3A07AAA/AccessDatabaseEngine.exe', 'AccessDatabaseEngine.exe') && Start-Process -FilePath "AccessDatabaseEngine.exe" -ArgumentList '/passive' -Wait && Remove-Item AccessDatabaseEngine.exe && Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "32-bit" -SetPropertyValue 'Dbq=.\Frends.ODBC.ExecuteQuery.Tests\TestFiles\ODBC_testDB.accdb'
+      prebuild_command: Invoke-WebRequest -Uri "https://download.microsoft.com/download/1/E/7/1E7B1181-3974-4B29-9A47-CC857B271AA2/English/X64/msodbcsql.msi" -OutFile "#pwd/odbc.msi" && Start-Process -Filepath "#pwd/odbc.msi" -ArgumentList "/qr IACCEPTMSODBCSQLLICENSETERMS=YES" && Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "32-bit" -SetPropertyValue 'Dbq=.\Frends.ODBC.ExecuteQuery.Tests\TestFiles\ODBC_testDB.accdb'
     secrets:
       badge_service_api_key: ${{ secrets.BADGE_SERVICE_API_KEY }}
       test_feed_api_key: ${{ secrets.TASKS_TEST_FEED_API_KEY }}
