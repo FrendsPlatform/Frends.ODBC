@@ -1,5 +1,5 @@
 ﻿#!/bin/bash
-echo pwd
+echo $pwd
 sudo apt-get update
 sudo apt-get -y install curl
 sudo apt-get -y install gnupg
