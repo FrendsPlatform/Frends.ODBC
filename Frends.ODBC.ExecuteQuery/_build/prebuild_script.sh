@@ -9,11 +9,7 @@ sudo apt-get -y install odbcinst
 sudo apt update
 sudo apt -y install dos2unix
 sudo apt -y install lsb-release
-if ! [[ "18.04 20.04 22.04" == *"$(lsb_release -rs)"* ]];
-then
-    echo "Ubuntu $(lsb_release -rs) is not currently supported.";
-    exit;
-fi
+
 sudo su
 sudo curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 sudo curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-release.list
