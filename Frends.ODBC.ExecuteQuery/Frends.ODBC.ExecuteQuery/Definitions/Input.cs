@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Frends.ODBC.ExecuteQuery.Definitions;
 
 /// <summary>
-/// Input parameters
+/// Input parameters.
 /// </summary>
 public class Input
 {
