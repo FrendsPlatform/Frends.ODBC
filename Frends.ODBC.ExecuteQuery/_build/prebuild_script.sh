@@ -1,5 +1,4 @@
 ﻿#!/bin/bash
-mkdir -p  /etc/odbc
 apt-get update
 apt-get -y install sudo
 apt-get -y install nano
