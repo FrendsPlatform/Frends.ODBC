@@ -25,4 +25,4 @@ sudo source ~/.bashrc
 # optional: for unixODBC development headers
 sudo apt-get install -y unixodbc-dev
 sudo cp ./odbcinst.init ../../../../../../etc/odbcinst.init
-
+echo "file odbcinst.init copied to etc/odbcinst.init"
