@@ -1,6 +1,6 @@
 ﻿#!/usr/bin/env bash
 echo $PWD
-sudo -i 
+sudo su
 sudo apt-get update
 sudo apt-get -y install curl
 sudo apt-get -y install gnupg
@@ -8,7 +8,7 @@ sudo apt-get -y install mdbtools
 sudo apt-get -y install odbcinst
 sudo apt-get -y install lsb-release
 
-sudo su -c
+sudo su
 curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 
 curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > ./mssql-release.list
