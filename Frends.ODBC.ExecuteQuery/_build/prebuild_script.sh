@@ -7,6 +7,7 @@ apt-get -y install nano
 apt-get -y install curl
 apt-get -y install gnupg
 apt-get -y install mdbtools
+apt-get -y install odbcinst
 apt update
 apt -y install dos2unix
 apt -y install lsb-release
@@ -30,4 +31,5 @@ source ~/.bashrc
 # optional: for unixODBC development headers
 sudo apt-get install -y unixodbc-dev
 
-docker-compose up -d
+cp ./odbcinst.init ../../../../../../etc/odbcinst.init
+
