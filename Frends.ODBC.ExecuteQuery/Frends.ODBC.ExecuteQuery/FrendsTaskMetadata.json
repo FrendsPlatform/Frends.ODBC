@@ -1,7 +1,7 @@
 {
   "Tasks": [
     {
-      "TaskMethod": "Frends.ODBC.ExecuteQuery.JSON.ConvertJSONStringToJToken"
+      "TaskMethod": "Frends.ODBC.ExecuteQuery.ODBC.ExecuteQuery"
     }
   ]
 }
