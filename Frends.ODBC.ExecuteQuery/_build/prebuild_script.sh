@@ -8,7 +8,7 @@ sudo apt-get -y install mdbtools
 sudo apt-get -y install odbcinst
 sudo apt-get -y install lsb-release
 
-sudo su
+sudo su -c
 curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 
 curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > ./mssql-release.list
