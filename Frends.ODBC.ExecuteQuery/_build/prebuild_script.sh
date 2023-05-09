@@ -1,6 +1,6 @@
 ﻿#!/bin/bash
-sudo apt-get update
-sudo apt-get -y install sudo
+apt-get update
+apt-get -y install sudo
 sudo apt-get -y install nano
 sudo apt-get -y install curl
 sudo apt-get -y install gnupg
