@@ -1,16 +1,12 @@
 ﻿#!/bin/bash
-apt-get update
-apt-get -y install sudo
-sudo apt-get -y install nano
+echo pwd
+sudo apt-get update
 sudo apt-get -y install curl
 sudo apt-get -y install gnupg
 sudo apt-get -y install mdbtools
 sudo apt-get -y install odbcinst
-sudo apt update
-sudo apt -y install dos2unix
-sudo apt -y install lsb-release
-
-sudo su
+sudo apt-get -y install dos2unix
+sudo apt-get -y install lsb-release
 sudo curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 sudo curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-release.list
 sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
