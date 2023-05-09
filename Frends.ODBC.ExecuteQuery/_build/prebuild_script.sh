@@ -1,5 +1,6 @@
 ﻿#!/usr/bin/env bash
 echo $PWD
+sudo -i 
 sudo apt-get update
 sudo apt-get -y install curl
 sudo apt-get -y install gnupg
@@ -16,5 +17,5 @@ echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc
 sudo source ~/.bashrc
 # optional: for unixODBC development headers
 sudo apt-get install -y unixodbc-dev
-sudo cp ./odbcinst.init ../../../../../../etc/odbcinst.init
+sudo cp ./odbcinst.init ../../../../../etc/odbcinst.init
 echo "file odbcinst.init copied to etc/odbcinst.init"
