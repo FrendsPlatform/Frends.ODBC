@@ -1,8 +1,0 @@
-﻿version: '3'
-
-services:
-  ms-sql:
-    build:
-      context: .
-    ports:
-    - "1433:1433"

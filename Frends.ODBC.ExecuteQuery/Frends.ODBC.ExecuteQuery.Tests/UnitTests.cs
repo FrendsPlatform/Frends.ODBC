@@ -15,7 +15,7 @@ public class UnitTests
     // Remove
     //Remove-OdbcDsn -Name "ODBC_testDB" -DsnType "User" -Platform "64-bit"
 
-    private static readonly string _connString = "Driver={SQL Server};Server=localhost;Database=UnitTests;DSN=ODBC_testDB;Uid=sa;Pwd=yourStrong!Password;";
+    private static readonly string _connString = "Driver={ODBC Driver 17 for SQL Server};Server=localhost;Database=UnitTests;DSN=ODBC_testDB;Uid=sa;Pwd=yourStrong!Password;";
     private static readonly string _tableName = "AnimalTypes";
 
     [TestCleanup]
@@ -31,7 +31,7 @@ public class UnitTests
     }
 
     [TestMethod]
-    public async Task ShouldReadFromMsAccessViaOdbc_ExecuteTypes_Auto()
+    public async Task ShouldReadFromMsSQLViaOdbc_ExecuteTypes_Auto()
     {
         var input = new Input
         {
@@ -57,7 +57,7 @@ public class UnitTests
     }
 
     [TestMethod]
-    public async Task ShouldReadFromMsAccessViaOdbc_ExecuteTypes_Scalar()
+    public async Task ShouldReadFromMsSQLViaOdbc_ExecuteTypes_Scalar()
     {
         var input = new Input
         {
@@ -82,7 +82,7 @@ public class UnitTests
     }
 
     [TestMethod]
-    public async Task ShouldReadFromMsAccessViaOdbc_ExecuteTypes_ExecuteReader()
+    public async Task ShouldReadFromMsSQLViaOdbc_ExecuteTypes_ExecuteReader()
     {
         var input = new Input
         {
@@ -108,7 +108,7 @@ public class UnitTests
     }
 
     [TestMethod]
-    public async Task ShouldReadFromMsAccessViaOdbc_ExecuteTypes_NonQuery()
+    public async Task ShouldReadFromMsSQLViaOdbc_ExecuteTypes_NonQuery()
     {
         var selectInput = new Input
         {
