@@ -8,14 +8,14 @@ namespace Frends.ODBC.ExecuteQuery.Tests;
 public class UnitTests
 {
     // Create OdbcDsn using PowerShell as admin (check file location):
-    //Add-OdbcDsn -Name "ODBC_testDB" -DriverName "SQL Server" -DsnType "User" -Platform "64-bit" -SetPropertyValue @("Name=ODBC_testDB", "Server=localhost", "Trusted_Connection=Yes", "Database=UnitTests")
+    //Add-OdbcDsn -Name "ODBC_testDB" -DriverName "ODBC Driver 17 for SQL Server" -DsnType "User" -Platform "64-bit" -SetPropertyValue @("Name=ODBC_testDB", "Server=localhost", "Trusted_Connection=Yes", "Database=UnitTests")
     // or 
     //Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "32-bit" -SetPropertyValue "Dbq=$pwd\TestFiles\ODBC_testDB_32.mdb"  
 
     // Remove
     //Remove-OdbcDsn -Name "ODBC_testDB" -DsnType "User" -Platform "64-bit"
 
-    private static readonly string _connString = "Driver={ODBC Driver 17 for SQL Server};Server=localhost;Database=UnitTests;DSN=ODBC_testDB;Uid=sa;Pwd=yourStrong!Password;";
+    private static readonly string _connString = "Driver={ODBC Driver 17 for SQL Server};Server=127.0.0.1,1433; Database=UnitTests;DSN=ODBC_testDB;Uid=sa;Pwd=yourStrong!Password;";
     private static readonly string _tableName = "AnimalTypes";
 
     [TestCleanup]

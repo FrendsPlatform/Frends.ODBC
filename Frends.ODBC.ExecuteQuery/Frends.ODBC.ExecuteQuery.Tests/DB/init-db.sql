@@ -6,7 +6,7 @@ CREATE DATABASE UnitTests;
 GO
 USE UnitTests;
 GO
-CREATE TABLE AnimalTypes (Id INT, Animal nvarchar(max));
+CREATE TABLE AnimalTypes (Id INT, Animal nvarchar(255), PRIMARY KEY(Id));
 GO
 INSERT INTO AnimalTypes (Id, Animal)
 VALUES (1, 'Mammal'), (2, 'Bird');
