@@ -52,8 +52,8 @@ public class UnitTests
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Success);
         Assert.AreEqual(-1, result.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"Animal\": \"Mammal\"\r\n}", result.Data.First.ToString());
-        Assert.AreEqual("{\r\n  \"Animal\": \"Bird\"\r\n}", result.Data.Last.ToString());
+        Assert.AreEqual("Mammal", result.Data.First.Animal.ToString());
+        Assert.AreEqual("Bird", result.Data.Last.Animal.ToString());
     }
 
     [TestMethod]
@@ -78,7 +78,7 @@ public class UnitTests
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Success);
         Assert.AreEqual(1, result.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"Value\": \"Mammal\"\r\n}", result.Data.ToString());
+        Assert.AreEqual("Mammal", result.Data.Value.ToString());
     }
 
     [TestMethod]
@@ -103,8 +103,8 @@ public class UnitTests
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Success);
         Assert.AreEqual(-1, result.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"Animal\": \"Mammal\"\r\n}", result.Data.First.ToString());
-        Assert.AreEqual("{\r\n  \"Animal\": \"Bird\"\r\n}", result.Data.Last.ToString());
+        Assert.AreEqual("Mammal", result.Data.First.Animal.ToString());
+        Assert.AreEqual("Bird", result.Data.Last.Animal.ToString());
     }
 
     [TestMethod]
@@ -152,13 +152,13 @@ public class UnitTests
         Assert.IsNotNull(queryResult);
         Assert.IsTrue(queryResult.Success);
         Assert.AreEqual(-1, queryResult.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"AffectedRows\": -1\r\n}", queryResult.Data.ToString());
+        Assert.AreEqual(-1, int.Parse(queryResult.Data.AffectedRows.ToString()));
 
         var insertResult = await ODBC.ExecuteQuery(insertInput, options, default);
         Assert.IsNotNull(insertResult);
         Assert.IsTrue(insertResult.Success);
         Assert.AreEqual(1, insertResult.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"AffectedRows\": 1\r\n}", insertResult.Data.ToString());
+        Assert.AreEqual(1, int.Parse(insertResult.Data.AffectedRows.ToString()));
 
         Assert.AreEqual(3, GetCount());
 
@@ -166,13 +166,13 @@ public class UnitTests
         Assert.IsNotNull(updateResult);
         Assert.IsTrue(updateResult.Success);
         Assert.AreEqual(1, updateResult.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"AffectedRows\": 1\r\n}", updateResult.Data.ToString());
+        Assert.AreEqual(1, int.Parse(updateResult.Data.AffectedRows.ToString()));
 
         var deleteResult = await ODBC.ExecuteQuery(deleteInput, options, default);
         Assert.IsNotNull(deleteResult);
         Assert.IsTrue(deleteResult.Success);
         Assert.AreEqual(1, deleteResult.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"AffectedRows\": 1\r\n}", deleteResult.Data.ToString());
+        Assert.AreEqual(1, int.Parse(deleteResult.Data.AffectedRows.ToString()));
 
         Assert.AreEqual(2, GetCount());
     }
