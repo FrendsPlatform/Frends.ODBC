@@ -7,7 +7,7 @@ if ([Environment]::Is64BitOperatingSystem) {
 	Write-Host "File for $osName downloaded"
 	Start-Process -FilePath "$PWD/odbc.msi" -ArgumentList "/qr IACCEPTMSODBCSQLLICENSETERMS=YES"
 	Write-Host "Installation complete"
-	Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "64-bit" -SetPropertyValue 'Dbq=.\Frends.ODBC.ExecuteQuery.Tests\TestFiles\ODBC_testDB.accdb'
+	Add-OdbcDsn -Name "ODBC_testDB" -DriverName "ODBC Driver 17 for SQL Server" -DsnType "User" -Platform "64-bit" -SetPropertyValue @("Name=ODBC_testDB", "Server=localhost", "Trusted_Connection=Yes", "Database=UnitTests")
 	Write-Host "ODBC_testDB.accdb added"
 }
 else {
@@ -16,6 +16,6 @@ else {
 	Write-Host "File for $osName downloaded"
 	Start-Process -FilePath "$PWD/odbc.msi" -ArgumentList "/qr IACCEPTMSODBCSQLLICENSETERMS=YES"
 	Write-Host "Installation complete"
-	Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "32-bit" -SetPropertyValue 'Dbq=.\Frends.ODBC.ExecuteQuery.Tests\TestFiles\ODBC_testDB_32.mdb'
+	Add-OdbcDsn -Name "ODBC_testDB" -DriverName "ODBC Driver 17 for SQL Server" -DsnType "User" -Platform "32-bit" -SetPropertyValue @("Name=ODBC_testDB", "Server=localhost", "Trusted_Connection=Yes", "Database=UnitTests")
 	Write-Host "ODBC_testDB_32.mdb added"
 }
