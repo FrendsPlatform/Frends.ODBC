@@ -3,7 +3,7 @@
 namespace Frends.ODBC.ExecuteQuery.Definitions;
 
 /// <summary>
-/// Optional parameters
+/// Optional parameters.
 /// </summary>
 public class Options
 {
