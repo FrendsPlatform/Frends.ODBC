@@ -8,7 +8,7 @@ namespace Frends.ODBC.ExecuteQuery.Tests;
 public class UnitTests
 {
     /// <summary>
-    /// 
+    ///  
     /// Build ms sql docker container:
     /// cd Frends.ODBC.Tests\DB
     /// docker-compose up -d
