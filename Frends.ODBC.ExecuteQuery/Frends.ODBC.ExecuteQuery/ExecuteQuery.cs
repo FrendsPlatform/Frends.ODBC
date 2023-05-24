@@ -6,8 +6,6 @@ using System.Data;
 using System.Data.Common;
 using System.Data.Odbc;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,17 +16,8 @@ namespace Frends.ODBC.ExecuteQuery;
 /// </summary>
 public class ODBC
 {
-    /// Mem cleanup.
-    static ODBC()
-    {
-        var currentAssembly = Assembly.GetExecutingAssembly();
-        var currentContext = AssemblyLoadContext.GetLoadContext(currentAssembly);
-        if (currentContext != null)
-            currentContext.Unloading += OnPluginUnloadingRequested;
-    }
-
     /// <summary>
-    /// Convert JSON string to JToken.
+    /// Execute ODBC query.
     /// [Documentation](https://tasks.frends.com/tasks/frends-tasks/Frends.ODBC.ExecuteQuery)
     /// </summary>
     /// <param name="input">Input parameters</param>
@@ -52,7 +41,7 @@ public class ODBC
             if (input.ParametersInOrder != null)
                 command.Parameters.AddRange(input.ParametersInOrder.Select(x => new OdbcParameter { Value = x.Value }).ToArray());
 
-            result = await ExecuteHandler(input, options, command, cancellationToken);
+            result = await ExecuteHandler(input, command, cancellationToken);
             return result;
         }
         catch (Exception ex)
@@ -70,7 +59,7 @@ public class ODBC
         }
     }
 
-    private static async Task<Result> ExecuteHandler(Input input, Options options, OdbcCommand command, CancellationToken cancellationToken)
+    private static async Task<Result> ExecuteHandler(Input input, OdbcCommand command, CancellationToken cancellationToken)
     {
         Result result;
         DbDataReader dbDataReader;
@@ -112,10 +101,5 @@ public class ODBC
         }
 
         return result;
-    }
-
-    private static void OnPluginUnloadingRequested(AssemblyLoadContext obj)
-    {
-        obj.Unloading -= OnPluginUnloadingRequested;
     }
 }

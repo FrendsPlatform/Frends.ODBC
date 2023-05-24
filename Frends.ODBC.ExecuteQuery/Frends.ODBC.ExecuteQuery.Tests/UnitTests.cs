@@ -3,18 +3,25 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.Odbc;
 
 namespace Frends.ODBC.ExecuteQuery.Tests;
+
 [TestClass]
 public class UnitTests
 {
-    // Create OdbcDsn using PowerShell as admin (check file location):
-    //Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "64-bit" -SetPropertyValue "Dbq=$pwd\TestFiles\ODBC_testDB.accdb"
-    // or 
-    //Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "32-bit" -SetPropertyValue "Dbq=$pwd\TestFiles\ODBC_testDB_32.mdb"  
-
-    // Remove
-    //Remove-OdbcDsn -Name "ODBC_testDB" -DsnType "User" -Platform "64-bit"
-
-    private static readonly string _connString = "DSN=ODBC_testDB";
+    /// <summary>
+    /// 
+    /// Build ms sql docker container:
+    /// cd Frends.ODBC.Tests\DB
+    /// docker-compose up -d
+    /// 
+    /// Create OdbcDsn using PowerShell as admin:
+    /// Add-OdbcDsn -Name "ODBC_testDB" -DriverName "ODBC Driver 17 for SQL Server" -DsnType "User" -Platform "64-bit" -SetPropertyValue @("Name=ODBC_testDB", "Server=localhost", "Trusted_Connection=Yes", "Database=UnitTests")
+    /// or
+    /// Add-OdbcDsn -Name "ODBC_testDB" -DriverName "ODBC Driver 17 for SQL Server" -DsnType "User" -Platform "32-bit" -SetPropertyValue @("Name=ODBC_testDB", "Server=localhost", "Trusted_Connection=Yes", "Database=UnitTests")
+    /// Remove
+    /// Remove-OdbcDsn -Name "ODBC_testDB" -DsnType "User" -Platform "64-bit"
+    /// Remove-OdbcDsn -Name "ODBC_testDB" -DsnType "User" -Platform "32-bit"
+    /// </summary>
+    private static readonly string _connString = "Driver={ODBC Driver 17 for SQL Server};Server=127.0.0.1,1433; Database=UnitTests;DSN=ODBC_testDB;Uid=sa;Pwd=yourStrong!Password;";
     private static readonly string _tableName = "AnimalTypes";
 
     [TestCleanup]
@@ -30,7 +37,7 @@ public class UnitTests
     }
 
     [TestMethod]
-    public async Task ShouldReadFromMsAccessViaOdbc_ExecuteTypes_Auto()
+    public async Task ShouldReadFromMsSQLViaOdbc_ExecuteTypes_Auto()
     {
         var input = new Input
         {
@@ -51,12 +58,12 @@ public class UnitTests
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Success);
         Assert.AreEqual(-1, result.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"Animal\": \"Mammal\"\r\n}", result.Data.First.ToString());
-        Assert.AreEqual("{\r\n  \"Animal\": \"Bird\"\r\n}", result.Data.Last.ToString());
+        Assert.AreEqual("Mammal", result.Data.First.Animal.ToString());
+        Assert.AreEqual("Bird", result.Data.Last.Animal.ToString());
     }
 
     [TestMethod]
-    public async Task ShouldReadFromMsAccessViaOdbc_ExecuteTypes_Scalar()
+    public async Task ShouldReadFromMsSQLViaOdbc_ExecuteTypes_Scalar()
     {
         var input = new Input
         {
@@ -77,11 +84,11 @@ public class UnitTests
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Success);
         Assert.AreEqual(1, result.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"Value\": \"Mammal\"\r\n}", result.Data.ToString());
+        Assert.AreEqual("Mammal", result.Data.Value.ToString());
     }
 
     [TestMethod]
-    public async Task ShouldReadFromMsAccessViaOdbc_ExecuteTypes_ExecuteReader()
+    public async Task ShouldReadFromMsSQLViaOdbc_ExecuteTypes_ExecuteReader()
     {
         var input = new Input
         {
@@ -102,12 +109,12 @@ public class UnitTests
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Success);
         Assert.AreEqual(-1, result.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"Animal\": \"Mammal\"\r\n}", result.Data.First.ToString());
-        Assert.AreEqual("{\r\n  \"Animal\": \"Bird\"\r\n}", result.Data.Last.ToString());
+        Assert.AreEqual("Mammal", result.Data.First.Animal.ToString());
+        Assert.AreEqual("Bird", result.Data.Last.Animal.ToString());
     }
 
     [TestMethod]
-    public async Task ShouldReadFromMsAccessViaOdbc_ExecuteTypes_NonQuery()
+    public async Task ShouldReadFromMsSQLViaOdbc_ExecuteTypes_NonQuery()
     {
         var selectInput = new Input
         {
@@ -151,13 +158,13 @@ public class UnitTests
         Assert.IsNotNull(queryResult);
         Assert.IsTrue(queryResult.Success);
         Assert.AreEqual(-1, queryResult.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"AffectedRows\": -1\r\n}", queryResult.Data.ToString());
+        Assert.AreEqual(-1, int.Parse(queryResult.Data.AffectedRows.ToString()));
 
         var insertResult = await ODBC.ExecuteQuery(insertInput, options, default);
         Assert.IsNotNull(insertResult);
         Assert.IsTrue(insertResult.Success);
         Assert.AreEqual(1, insertResult.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"AffectedRows\": 1\r\n}", insertResult.Data.ToString());
+        Assert.AreEqual(1, int.Parse(insertResult.Data.AffectedRows.ToString()));
 
         Assert.AreEqual(3, GetCount());
 
@@ -165,13 +172,13 @@ public class UnitTests
         Assert.IsNotNull(updateResult);
         Assert.IsTrue(updateResult.Success);
         Assert.AreEqual(1, updateResult.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"AffectedRows\": 1\r\n}", updateResult.Data.ToString());
+        Assert.AreEqual(1, int.Parse(updateResult.Data.AffectedRows.ToString()));
 
         var deleteResult = await ODBC.ExecuteQuery(deleteInput, options, default);
         Assert.IsNotNull(deleteResult);
         Assert.IsTrue(deleteResult.Success);
         Assert.AreEqual(1, deleteResult.RecordsAffected);
-        Assert.AreEqual("{\r\n  \"AffectedRows\": 1\r\n}", deleteResult.Data.ToString());
+        Assert.AreEqual(1, int.Parse(deleteResult.Data.AffectedRows.ToString()));
 
         Assert.AreEqual(2, GetCount());
     }
