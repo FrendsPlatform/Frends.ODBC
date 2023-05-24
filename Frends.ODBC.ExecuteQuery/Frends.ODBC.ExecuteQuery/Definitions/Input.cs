@@ -11,7 +11,7 @@ public class Input
     /// <summary>
     /// Connection string.
     /// </summary>
-    /// <example>DSN=Access</example>
+    /// <example>Driver={driver};Server=127.0.0.1,1433; Database=UnitTests;DSN=ODBC_testDB;Uid=sa;Pwd=yourStrong!Password;</example>
     [PasswordPropertyText]
     public string ConnectionString { get; set; }
 

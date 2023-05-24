@@ -12,7 +12,7 @@
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<Description>Frends Task to execute ODBC query.</Description>
 	<PackageProjectUrl>https://frends.com/</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/FrendsPlatform/Frends.JSON</RepositoryUrl>
+	<RepositoryUrl>https://github.com/FrendsPlatform/Frends.ODBC</RepositoryUrl>
   </PropertyGroup>
 	
   <ItemGroup>

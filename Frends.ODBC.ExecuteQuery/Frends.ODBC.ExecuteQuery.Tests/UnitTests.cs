@@ -8,20 +8,9 @@ namespace Frends.ODBC.ExecuteQuery.Tests;
 public class UnitTests
 {
     /// <summary>
-    ///  
-    /// Build ms sql docker container:
-    /// cd Frends.ODBC.Tests\DB
-    /// docker-compose up -d
-    /// 
-    /// Create OdbcDsn using PowerShell as admin:
-    /// Add-OdbcDsn -Name "ODBC_testDB" -DriverName "ODBC Driver 17 for SQL Server" -DsnType "User" -Platform "64-bit" -SetPropertyValue @("Name=ODBC_testDB", "Server=localhost", "Trusted_Connection=Yes", "Database=UnitTests")
-    /// or
-    /// Add-OdbcDsn -Name "ODBC_testDB" -DriverName "ODBC Driver 17 for SQL Server" -DsnType "User" -Platform "32-bit" -SetPropertyValue @("Name=ODBC_testDB", "Server=localhost", "Trusted_Connection=Yes", "Database=UnitTests")
-    /// Remove
-    /// Remove-OdbcDsn -Name "ODBC_testDB" -DsnType "User" -Platform "64-bit"
-    /// Remove-OdbcDsn -Name "ODBC_testDB" -DsnType "User" -Platform "32-bit"
+    /// docker-compose -f DB/docker-compose.yml up -d && sudo -i && sudo apt-get update && sudo apt-get -y install dos2unix && sudo dos2unix ./_build/prebuild_script.sh && chmod 777 ./_build/prebuild_script.sh && ./_build/prebuild_script.sh
     /// </summary>
-    private static readonly string _connString = "Driver={ODBC Driver 17 for SQL Server};Server=127.0.0.1,1433; Database=UnitTests;DSN=ODBC_testDB;Uid=sa;Pwd=yourStrong!Password;";
+    private static readonly string _connString = "Driver={driver};Server=127.0.0.1,1433; Database=UnitTests;DSN=ODBC_testDB;Uid=sa;Pwd=yourStrong!Password;";
     private static readonly string _tableName = "AnimalTypes";
 
     [TestCleanup]

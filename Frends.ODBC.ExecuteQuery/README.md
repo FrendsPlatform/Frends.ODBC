@@ -18,7 +18,7 @@ Rebuild the project
 
 Run tests
 
-`Add-OdbcDsn -Name "ODBC_testDB" -DriverName "Microsoft Access Driver (*.mdb, *.accdb)" -DsnType "User" -Platform "64-bit" -SetPropertyValue "Dbq=$pwd\TestFiles\ODBC_testDB.accdb"`
+`docker-compose -f ./Frends.ODBC.ExecuteQuery.Tests/DB/docker-compose.yml up -d && sudo -i && sudo apt-get update && sudo apt-get -y install dos2unix && sudo dos2unix ./_build/prebuild_script.sh && chmod 777 ./_build/prebuild_script.sh && ./_build/prebuild_script.sh`
 
 `dotnet test`
 
