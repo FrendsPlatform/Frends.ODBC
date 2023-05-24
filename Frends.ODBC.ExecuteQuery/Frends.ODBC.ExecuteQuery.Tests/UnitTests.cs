@@ -10,7 +10,7 @@ public class UnitTests
     /// <summary>
     /// docker-compose -f DB/docker-compose.yml up -d && sudo -i && sudo apt-get update && sudo apt-get -y install dos2unix && sudo dos2unix ./_build/prebuild_script.sh && chmod 777 ./_build/prebuild_script.sh && ./_build/prebuild_script.sh
     /// </summary>
-    private static readonly string _connString = "Driver={driver};Server=127.0.0.1,1433; Database=UnitTests;DSN=ODBC_testDB;Uid=sa;Pwd=yourStrong!Password;";
+    private static readonly string _connString = "Driver={ODBC Driver 17 for SQL Server};Server=127.0.0.1,1433; Database=UnitTests;DSN=ODBC_testDB;Uid=sa;Pwd=yourStrong!Password;";
     private static readonly string _tableName = "AnimalTypes";
 
     [TestCleanup]
