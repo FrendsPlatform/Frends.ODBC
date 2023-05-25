@@ -1,0 +1,19 @@
+name: ExecuteQuery build test
+
+on:
+  push:
+    branches-ignore: 
+      - main
+    paths:
+      - 'Frends.ODBC.ExecuteQuery/**'
+  workflow_dispatch:
+
+jobs:
+  linux-build:
+    uses: FrendsPlatform/FrendsTasks/.github/workflows/linux_build_test.yml@main
+    with:
+      workdir: Frends.ODBC.ExecuteQuery
+      prebuild_command: docker-compose -f ./Frends.ODBC.ExecuteQuery.Tests/DB/docker-compose.yml up -d && sudo -i && sudo apt-get update && sudo apt-get -y install dos2unix && sudo dos2unix ./_build/prebuild_script.sh && chmod 777 ./_build/prebuild_script.sh && ./_build/prebuild_script.sh
+    secrets:
+      badge_service_api_key: ${{ secrets.BADGE_SERVICE_API_KEY }}
+      test_feed_api_key: ${{ secrets.TASKS_TEST_FEED_API_KEY }}
