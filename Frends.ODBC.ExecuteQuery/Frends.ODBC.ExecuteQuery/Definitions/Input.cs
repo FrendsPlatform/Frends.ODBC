@@ -12,6 +12,7 @@ public class Input
     /// Connection string.
     /// </summary>
     /// <example>Driver={driver};Server=127.0.0.1,1433; Database=UnitTests;DSN=ODBC_testDB;Uid=sa;Pwd=yourStrong!Password;</example>
+    [DisplayFormat(DataFormatString = "Text")]
     [PasswordPropertyText]
     public string ConnectionString { get; set; }
 
