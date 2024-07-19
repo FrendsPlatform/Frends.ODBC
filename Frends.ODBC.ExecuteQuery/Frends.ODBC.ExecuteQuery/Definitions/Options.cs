@@ -20,4 +20,11 @@ public class Options
     /// <example>60</example>
     [DefaultValue(60)]
     public int CommandTimeoutSeconds { get; set; }
+
+    /// <summary>
+    /// Output mode. Default is JToken.
+    /// DataReader is valid only for ExecuteReader queries.
+    /// If using DataReader, remember to dispose task result at end of scope.
+    /// </summary>
+    public OutputMode OutputMode { get; set; }
 }

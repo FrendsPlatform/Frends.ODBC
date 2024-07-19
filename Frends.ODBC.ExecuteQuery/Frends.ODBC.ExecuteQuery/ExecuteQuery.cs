@@ -30,10 +30,10 @@ public class ODBC
 
         try
         {
-            using var connection = new OdbcConnection(input.ConnectionString);
+            var connection = new OdbcConnection(input.ConnectionString);
             await connection.OpenAsync(cancellationToken);
 
-            using var command = connection.CreateCommand();
+            var command = connection.CreateCommand();
             command.CommandTimeout = options.CommandTimeoutSeconds;
             command.CommandText = input.Query;
             command.CommandType = CommandType.Text;
@@ -41,7 +41,18 @@ public class ODBC
             if (input.ParametersInOrder != null)
                 command.Parameters.AddRange(input.ParametersInOrder.Select(x => new OdbcParameter { Value = x.Value }).ToArray());
 
-            result = await ExecuteHandler(input, command, cancellationToken);
+            result = await ExecuteHandler(input, options, command, cancellationToken);
+            if (options.OutputMode != OutputMode.DataReader)
+            {
+                await connection.CloseAsync();
+                await connection.DisposeAsync();
+                await command.DisposeAsync();
+            }
+            else
+            {
+                result.DisposableConnetion = connection;
+                result.DisposableCommand = command;
+            }
             return result;
         }
         catch (Exception ex)
@@ -55,11 +66,14 @@ public class ODBC
         }
         finally
         {
-            OdbcConnection.ReleaseObjectPool();
+            if (options.OutputMode != OutputMode.DataReader)
+            {
+                OdbcConnection.ReleaseObjectPool();
+            }
         }
     }
 
-    private static async Task<Result> ExecuteHandler(Input input, OdbcCommand command, CancellationToken cancellationToken)
+    private static async Task<Result> ExecuteHandler(Input input, Options options, OdbcCommand command, CancellationToken cancellationToken)
     {
         Result result;
         DbDataReader dbDataReader;
@@ -90,7 +104,12 @@ public class ODBC
                 result = new Result(true, 1, null, JToken.FromObject(new { Value = dataObject }));
                 break;
             case ExecuteTypes.ExecuteReader:
-                dbDataReader = (OdbcDataReader)await command.ExecuteReaderAsync(cancellationToken).ConfigureAwait(false);
+                dbDataReader = (OdbcDataReader)await command.ExecuteReaderAsync(cancellationToken);
+                if (options.OutputMode == OutputMode.DataReader)
+                {
+                    result = new Result(true, dbDataReader.RecordsAffected, (OdbcDataReader)dbDataReader);
+                    break;
+                }
                 table.Load(dbDataReader);
                 result = new Result(true, dbDataReader.RecordsAffected, null, JToken.FromObject(table));
                 await dbDataReader.CloseAsync();
