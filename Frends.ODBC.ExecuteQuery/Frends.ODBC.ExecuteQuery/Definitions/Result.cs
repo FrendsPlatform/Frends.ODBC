@@ -41,16 +41,20 @@ public class Result : IDisposable
     public dynamic Data { get; private set; }
 
     /// <summary>
+    /// OdbsDataReader object that is returned only if OutputMode is set to DataReader.
+    /// </summary>
+    /// <example>OdbcDataReader object</example>
+    public OdbcDataReader DataReader { get; init; }
+
+    /// <summary>
     /// This is used to dispose the connection and command if OutputMode is DataReader.
     /// </summary>
-    internal OdbcConnection DisposableConnetion { get; set; }
+    internal OdbcConnection DisposableConnection { get; set; }
 
     /// <summary>
     /// This is used to dispose the connection and command if OutputMode is DataReader.
     /// </summary>
     internal OdbcCommand DisposableCommand { get; set; }
-
-    private readonly OdbcDataReader _dataReader;
 
     internal Result(bool success, int recordsAffected, string errorMessage, dynamic data)
     {
@@ -64,16 +68,7 @@ public class Result : IDisposable
     {
         Success = success;
         RecordsAffected = recordsAffected;
-        _dataReader = dataReader;
-    }
-
-    /// <summary>
-    /// OdbsDataReader for OutputMode.DataReader.
-    /// </summary>
-    /// <returns>OdbcDataReader</returns>
-    public DbDataReader GetDataReader()
-    {
-        return _dataReader;
+        DataReader = dataReader;
     }
 
     /// <summary>
@@ -81,9 +76,9 @@ public class Result : IDisposable
     /// </summary>
     public void Dispose()
     {
-        DisposableConnetion?.Dispose();
+        DisposableConnection?.Dispose();
         DisposableCommand?.Dispose();
-        _dataReader?.Dispose();
+        DataReader?.Dispose();
 
         OdbcConnection.ReleaseObjectPool();
     }
