@@ -50,7 +50,7 @@ public class ODBC
             }
             else
             {
-                result.DisposableConnetion = connection;
+                result.DisposableConnection = connection;
                 result.DisposableCommand = command;
             }
             return result;
