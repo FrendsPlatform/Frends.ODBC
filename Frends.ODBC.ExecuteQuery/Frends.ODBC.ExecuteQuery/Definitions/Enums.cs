@@ -25,3 +25,16 @@ public enum ExecuteTypes
     /// </summary>
     ExecuteReader
 }
+
+public enum OutputMode
+{
+    /// <summary>
+    /// Return data as JToken.
+    /// </summary>
+    JToken,
+
+    /// <summary>
+    /// Return data as DataReader. This has to be disposed.
+    /// </summary>
+    DataReader,
+}
