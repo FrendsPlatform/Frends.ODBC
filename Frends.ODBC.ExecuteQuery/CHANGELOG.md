@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.0.1] - 2025-03-25
+## [2.1.0] - 2025-03-25
 ### Changed
 - Update packages:
   System.Data.Odbc        7.0.0  -> 9.0.3
