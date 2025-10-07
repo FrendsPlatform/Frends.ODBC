@@ -183,4 +183,51 @@ public class UnitTests
         connection.Dispose();
         return count != null ? (int)count : -1;
     }
+
+    [TestMethod]
+    public async Task ShouldHandleDataReaderOutputMode()
+    {
+        var input = new Input
+        {
+            ConnectionString = _connString,
+            ExecuteType = ExecuteTypes.ExecuteReader,
+            Query = "SELECT Animal FROM AnimalTypes WHERE Animal = 'Mammal'"
+        };
+
+        var options = new Options
+        {
+            CommandTimeoutSeconds = 30,
+            ThrowErrorOnFailure = true,
+            OutputMode = OutputMode.DataReader
+        };
+
+        var result = await ODBC.ExecuteQuery(input, options, default);
+
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.Success);
+    }
+
+    [TestMethod]
+    public async Task ShouldHandleExceptionWithThrowErrorOnFailureFalse()
+    {
+        var input = new Input
+        {
+            ConnectionString = "InvalidConnectionString",
+            ExecuteType = ExecuteTypes.Auto,
+            Query = "SELECT * FROM AnimalTypes"
+        };
+
+        var options = new Options
+        {
+            CommandTimeoutSeconds = 30,
+            ThrowErrorOnFailure = false // This should return error result instead of throwing
+        };
+
+        var result = await ODBC.ExecuteQuery(input, options, default);
+
+        Assert.IsNotNull(result);
+        Assert.IsFalse(result.Success);
+        Assert.IsNotNull(result.ErrorMessage);
+        Assert.IsTrue(result.ErrorMessage.Contains("ExecuteQuery exception"));
+    }
 }
