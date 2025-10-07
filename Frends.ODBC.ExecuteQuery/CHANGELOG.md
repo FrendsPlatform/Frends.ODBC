@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.2.0] - 2025-10-06
+### Changed
+- Update dotnet version to 8.0
+
 ## [2.1.0] - 2025-03-25
 ### Changed
 - Update packages:

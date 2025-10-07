@@ -26,6 +26,9 @@ public enum ExecuteTypes
     ExecuteReader
 }
 
+/// <summary>
+/// Output modes.
+/// </summary>
 public enum OutputMode
 {
     /// <summary>
