@@ -44,7 +44,7 @@ public class Result : IDisposable
     /// OdbsDataReader object that is returned only if OutputMode is set to DataReader.
     /// </summary>
     /// <example>OdbcDataReader object</example>
-    public OdbcDataReader DataReader { get; init; }
+    public DataReaderWrapper DataReader { get; init; }
 
     /// <summary>
     /// This is used to dispose the connection and command if OutputMode is DataReader.
@@ -64,7 +64,7 @@ public class Result : IDisposable
         Data = data;
     }
 
-    internal Result(bool success, int recordsAffected, OdbcDataReader dataReader)
+    internal Result(bool success, int recordsAffected, DataReaderWrapper dataReader)
     {
         Success = success;
         RecordsAffected = recordsAffected;
