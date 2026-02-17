@@ -43,7 +43,7 @@ public class Result : IDisposable
     /// <summary>
     /// OdbsDataReader object that is returned only if OutputMode is set to DataReader.
     /// </summary>
-    /// <example>OdbcDataReader object</example>
+    /// <example>DataReaderWrapper object</example>
     public DataReaderWrapper DataReader { get; init; }
 
     /// <summary>
