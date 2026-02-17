@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.2.0] - 2026-02-17
+### Added
+- Added DataReader wrapper class to avoid assembly reference issues when using DataReader output mode.
+
 ## [2.1.0] - 2025-03-25
 ### Changed
 - Update packages:
