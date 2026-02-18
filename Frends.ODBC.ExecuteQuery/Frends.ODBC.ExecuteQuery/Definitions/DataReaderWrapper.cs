@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Data.Odbc;
+using System.Threading.Tasks;
 
 namespace Frends.ODBC.ExecuteQuery.Definitions
 {
     /// <summary>
     /// Wrapper for OdbcDataReader to avoid assembly reference issues.
     /// </summary>
-    public class DataReaderWrapper : IDisposable
+    public class DataReaderWrapper : IAsyncDisposable
     {
         private readonly OdbcDataReader _reader;
 
@@ -73,9 +74,13 @@ namespace Frends.ODBC.ExecuteQuery.Definitions
         /// <summary>
         /// Releases all resources used by the DataReader.
         /// </summary>
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            _reader?.Dispose();
+            if (_reader != null)
+            {
+                await _reader.DisposeAsync();
+            }
+            GC.SuppressFinalize(this);
         }
     }
 

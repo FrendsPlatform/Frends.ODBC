@@ -190,7 +190,7 @@ public class UnitTests
             OutputMode = OutputMode.DataReader,
         };
 
-        var result = await ODBC.ExecuteQuery(input, options, default);
+        await using var result = await ODBC.ExecuteQuery(input, options, default);
 
         Assert.IsNotNull(result);
         Assert.IsTrue(result.Success);
@@ -205,9 +205,6 @@ public class UnitTests
         Assert.AreEqual("Bird", result.DataReader.GetValue(0).ToString());
 
         Assert.IsFalse(result.DataReader.Read());
-
-
-        result.Dispose();
     }
 
     private static int GetCount()

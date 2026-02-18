@@ -8,7 +8,7 @@ namespace Frends.ODBC.ExecuteQuery.Definitions;
 /// <summary>
 /// Task's result.
 /// </summary>
-public class Result : IDisposable
+public class Result : IAsyncDisposable
 {
     /// <summary>
     /// Operation complete without errors.
@@ -74,12 +74,21 @@ public class Result : IDisposable
     /// <summary>
     /// Disposes the connection, command and data reader if OutputMode is DataReader.
     /// </summary>
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        DisposableConnection?.Dispose();
-        DisposableCommand?.Dispose();
-        DataReader?.Dispose();
-
+        if (DataReader != null)
+        {
+            await DataReader.DisposeAsync();
+        }
+        if (DisposableConnection != null)
+        {
+            await DisposableConnection.DisposeAsync();
+        }
+        if (DisposableCommand != null)
+        {
+            await DisposableCommand.DisposeAsync();
+        }
         OdbcConnection.ReleaseObjectPool();
+        GC.SuppressFinalize(this);
     }
 }
