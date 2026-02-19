@@ -41,7 +41,7 @@ public class Result : IAsyncDisposable
     public dynamic Data { get; private set; }
 
     /// <summary>
-    /// OdbsDataReader object that is returned only if OutputMode is set to DataReader.
+    /// Gets the DataReaderWrapper instance when OutputMode is set to DataReader.
     /// </summary>
     /// <example>DataReaderWrapper object</example>
     public DataReaderWrapper DataReader { get; init; }
@@ -80,13 +80,13 @@ public class Result : IAsyncDisposable
         {
             await DataReader.DisposeAsync();
         }
-        if (DisposableConnection != null)
-        {
-            await DisposableConnection.DisposeAsync();
-        }
         if (DisposableCommand != null)
         {
             await DisposableCommand.DisposeAsync();
+        }
+        if (DisposableConnection != null)
+        {
+            await DisposableConnection.DisposeAsync();
         }
         OdbcConnection.ReleaseObjectPool();
         GC.SuppressFinalize(this);
