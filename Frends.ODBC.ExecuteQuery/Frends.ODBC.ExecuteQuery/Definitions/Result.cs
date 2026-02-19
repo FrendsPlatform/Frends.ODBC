@@ -8,7 +8,7 @@ namespace Frends.ODBC.ExecuteQuery.Definitions;
 /// <summary>
 /// Task's result.
 /// </summary>
-public class Result : IDisposable
+public class Result : IAsyncDisposable
 {
     /// <summary>
     /// Operation complete without errors.
@@ -41,10 +41,10 @@ public class Result : IDisposable
     public dynamic Data { get; private set; }
 
     /// <summary>
-    /// OdbsDataReader object that is returned only if OutputMode is set to DataReader.
+    /// Gets the DataReaderWrapper instance when OutputMode is set to DataReader.
     /// </summary>
-    /// <example>OdbcDataReader object</example>
-    public OdbcDataReader DataReader { get; init; }
+    /// <example>DataReaderWrapper object</example>
+    public DataReaderWrapper DataReader { get; init; }
 
     /// <summary>
     /// This is used to dispose the connection and command if OutputMode is DataReader.
@@ -64,7 +64,7 @@ public class Result : IDisposable
         Data = data;
     }
 
-    internal Result(bool success, int recordsAffected, OdbcDataReader dataReader)
+    internal Result(bool success, int recordsAffected, DataReaderWrapper dataReader)
     {
         Success = success;
         RecordsAffected = recordsAffected;
@@ -74,12 +74,21 @@ public class Result : IDisposable
     /// <summary>
     /// Disposes the connection, command and data reader if OutputMode is DataReader.
     /// </summary>
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        DisposableConnection?.Dispose();
-        DisposableCommand?.Dispose();
-        DataReader?.Dispose();
-
+        if (DataReader != null)
+        {
+            await DataReader.DisposeAsync();
+        }
+        if (DisposableCommand != null)
+        {
+            await DisposableCommand.DisposeAsync();
+        }
+        if (DisposableConnection != null)
+        {
+            await DisposableConnection.DisposeAsync();
+        }
         OdbcConnection.ReleaseObjectPool();
+        GC.SuppressFinalize(this);
     }
 }

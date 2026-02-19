@@ -172,6 +172,41 @@ public class UnitTests
         Assert.AreEqual(2, GetCount());
     }
 
+
+    [TestMethod]
+    public async Task ShouldReadFromMsSQLViaOdbc_ExecuteTypes_ExecuteReader_DataReader()
+    {
+        var input = new Input
+        {
+            ConnectionString = _connString,
+            ExecuteType = ExecuteTypes.ExecuteReader,
+            ParametersInOrder = new[] { new QueryParameter { Value = "Mammal" }, new QueryParameter { Value = "Bird" } },
+            Query = "SELECT Animal FROM AnimalTypes WHERE Animal = ? OR Animal = ?"
+        };
+        var options = new Options
+        {
+            CommandTimeoutSeconds = 30,
+            ThrowErrorOnFailure = true,
+            OutputMode = OutputMode.DataReader,
+        };
+
+        await using var result = await ODBC.ExecuteQuery(input, options, default);
+
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.Success);
+        Assert.AreEqual(-1, result.RecordsAffected);
+        Assert.IsNull(result.Data);
+        Assert.IsNotNull(result.DataReader);
+
+        Assert.IsTrue(result.DataReader.Read());
+        Assert.AreEqual("Mammal", result.DataReader.GetValue(0).ToString());
+
+        Assert.IsTrue(result.DataReader.Read());
+        Assert.AreEqual("Bird", result.DataReader.GetValue(0).ToString());
+
+        Assert.IsFalse(result.DataReader.Read());
+    }
+
     private static int GetCount()
     {
         using var connection = new OdbcConnection(_connString);

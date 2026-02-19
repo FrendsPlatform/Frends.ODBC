@@ -107,7 +107,7 @@ public class ODBC
                 dbDataReader = (OdbcDataReader)await command.ExecuteReaderAsync(cancellationToken);
                 if (options.OutputMode == OutputMode.DataReader)
                 {
-                    result = new Result(true, dbDataReader.RecordsAffected, (OdbcDataReader)dbDataReader);
+                    result = new Result(true, dbDataReader.RecordsAffected, new DataReaderWrapper((OdbcDataReader)dbDataReader));
                     break;
                 }
                 table.Load(dbDataReader);

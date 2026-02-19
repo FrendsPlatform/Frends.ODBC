@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.0] - 2026-02-18
+### Added
+- Added DataReaderWrapper class to encapsulate OdbcDataReader and avoid assembly reference issues when using DataReader output mode.
+- Result now implements IAsyncDisposable and exposes a DisposeAsync method for async resource cleanup.
+
+### Changed
+- [Breaking change] Updated target framework from net6.0 to net8.0.
+
 ## [2.1.0] - 2025-03-25
 ### Changed
 - Update packages:
