@@ -4,9 +4,6 @@
 ### Fixed
 - The task now returns structured error details in `Result.Error` when `ThrowErrorOnFailure` is disabled, instead of only a plain error string.
 - Added `ErrorMessageOnFailure` option to allow customising the error message thrown or returned on failure.
-- Fixed a compliance issue where the Task class was not marked as static.
-- Fixed compliance issues where third-party ODBC types were exposed as internal properties; they are now private fields.
-- Added missing XML documentation `<example>` tags on `QueryParameter.Value` and `DataReaderWrapper.DisposeAsync`.
 
 ## [3.0.0] - 2026-02-18
 ### Added
