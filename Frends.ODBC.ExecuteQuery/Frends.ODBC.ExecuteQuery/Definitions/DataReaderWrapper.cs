@@ -69,11 +69,13 @@ namespace Frends.ODBC.ExecuteQuery.Definitions
         /// <summary>
         /// Gets the number of columns in the current row.
         /// </summary>
+        /// <example>5</example>
         public int FieldCount => _reader.FieldCount;
 
         /// <summary>
         /// Releases all resources used by the DataReader.
         /// </summary>
+        /// <example>await result.DisposeAsync()</example>
         public async ValueTask DisposeAsync()
         {
             if (_reader != null)

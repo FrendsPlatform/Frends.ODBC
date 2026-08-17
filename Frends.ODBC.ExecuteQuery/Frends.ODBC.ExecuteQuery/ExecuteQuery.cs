@@ -1,4 +1,5 @@
 ﻿using Frends.ODBC.ExecuteQuery.Definitions;
+using Frends.ODBC.ExecuteQuery.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
@@ -14,7 +15,7 @@ namespace Frends.ODBC.ExecuteQuery;
 /// <summary>
 /// ODBC Task.
 /// </summary>
-public class ODBC
+public static class ODBC
 {
     /// <summary>
     /// Execute ODBC query.
@@ -50,19 +51,13 @@ public class ODBC
             }
             else
             {
-                result.DisposableConnection = connection;
-                result.DisposableCommand = command;
+                result.SetDisposableResources(connection, command);
             }
             return result;
         }
         catch (Exception ex)
         {
-            var eMsg = $"ExecuteQuery exception: {ex}.";
-
-            if (options.ThrowErrorOnFailure)
-                throw new Exception(eMsg);
-
-            return new Result(false, 0, eMsg, null);
+            return ex.Handle(options);
         }
         finally
         {
