@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Frends.ODBC.ExecuteQuery.Definitions;
 
@@ -13,6 +14,14 @@ public class Options
     /// <example>true</example>
     [DefaultValue(true)]
     public bool ThrowErrorOnFailure { get; set; }
+
+    /// <summary>
+    /// Overrides the error message on failure.
+    /// </summary>
+    /// <example>ODBC query failed: check connection string and query syntax</example>
+    [DisplayFormat(DataFormatString = "Text")]
+    [DefaultValue("")]
+    public string ErrorMessageOnFailure { get; set; } = string.Empty;
 
     /// <summary>
     /// Number of seconds for the operation to complete before it times out.

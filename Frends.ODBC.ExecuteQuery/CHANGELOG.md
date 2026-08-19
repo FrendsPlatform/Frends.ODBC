@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.0] - 2026-08-17
+### Fixed
+- [Breaking change] Remove string errorMessage property from Result class.
+- The task now returns structured error details in `Result.Error` when `ThrowErrorOnFailure` is disabled, instead of only a plain error string.
+- Added `ErrorMessageOnFailure` option to allow customising the error message thrown or returned on failure.
+
 ## [3.0.0] - 2026-02-18
 ### Added
 - Added DataReaderWrapper class to encapsulate OdbcDataReader and avoid assembly reference issues when using DataReader output mode.

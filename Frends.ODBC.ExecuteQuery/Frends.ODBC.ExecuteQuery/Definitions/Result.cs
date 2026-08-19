@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Common;
 using System.Data.Odbc;
 using System.Threading.Tasks;
 
@@ -10,6 +9,9 @@ namespace Frends.ODBC.ExecuteQuery.Definitions;
 /// </summary>
 public class Result : IAsyncDisposable
 {
+    private OdbcConnection _disposableConnection;
+    private OdbcCommand _disposableCommand;
+
     /// <summary>
     /// Operation complete without errors.
     /// </summary>
@@ -24,11 +26,10 @@ public class Result : IAsyncDisposable
     public int RecordsAffected { get; private set; }
 
     /// <summary>
-    /// Error message.
-    /// This value is generated when an exception occurs and Options.ThrowErrorOnFailure = false.
+    /// Error details. Null when Success is true.
     /// </summary>
-    /// <example>Error occured...</example>
-    public string ErrorMessage { get; private set; }
+    /// <example>null</example>
+    public Error Error { get; private set; }
 
     /// <summary>
     /// Query result as JToken.
@@ -46,21 +47,10 @@ public class Result : IAsyncDisposable
     /// <example>DataReaderWrapper object</example>
     public DataReaderWrapper DataReader { get; init; }
 
-    /// <summary>
-    /// This is used to dispose the connection and command if OutputMode is DataReader.
-    /// </summary>
-    internal OdbcConnection DisposableConnection { get; set; }
-
-    /// <summary>
-    /// This is used to dispose the connection and command if OutputMode is DataReader.
-    /// </summary>
-    internal OdbcCommand DisposableCommand { get; set; }
-
-    internal Result(bool success, int recordsAffected, string errorMessage, dynamic data)
+    internal Result(bool success, int recordsAffected, dynamic data)
     {
         Success = success;
         RecordsAffected = recordsAffected;
-        ErrorMessage = errorMessage;
         Data = data;
     }
 
@@ -69,6 +59,18 @@ public class Result : IAsyncDisposable
         Success = success;
         RecordsAffected = recordsAffected;
         DataReader = dataReader;
+    }
+
+    internal Result(bool success, Error error)
+    {
+        Success = success;
+        Error = error;
+    }
+
+    internal void SetDisposableResources(OdbcConnection connection, OdbcCommand command)
+    {
+        _disposableConnection = connection;
+        _disposableCommand = command;
     }
 
     /// <summary>
@@ -80,13 +82,13 @@ public class Result : IAsyncDisposable
         {
             await DataReader.DisposeAsync();
         }
-        if (DisposableCommand != null)
+        if (_disposableCommand != null)
         {
-            await DisposableCommand.DisposeAsync();
+            await _disposableCommand.DisposeAsync();
         }
-        if (DisposableConnection != null)
+        if (_disposableConnection != null)
         {
-            await DisposableConnection.DisposeAsync();
+            await _disposableConnection.DisposeAsync();
         }
         OdbcConnection.ReleaseObjectPool();
         GC.SuppressFinalize(this);

@@ -1,4 +1,5 @@
 ﻿using Frends.ODBC.ExecuteQuery.Definitions;
+using Frends.ODBC.ExecuteQuery.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel;
@@ -14,7 +15,7 @@ namespace Frends.ODBC.ExecuteQuery;
 /// <summary>
 /// ODBC Task.
 /// </summary>
-public class ODBC
+public static class ODBC
 {
     /// <summary>
     /// Execute ODBC query.
@@ -50,19 +51,13 @@ public class ODBC
             }
             else
             {
-                result.DisposableConnection = connection;
-                result.DisposableCommand = command;
+                result.SetDisposableResources(connection, command);
             }
             return result;
         }
         catch (Exception ex)
         {
-            var eMsg = $"ExecuteQuery exception: {ex}.";
-
-            if (options.ThrowErrorOnFailure)
-                throw new Exception(eMsg);
-
-            return new Result(false, 0, eMsg, null);
+            return ex.Handle(options);
         }
         finally
         {
@@ -87,21 +82,21 @@ public class ODBC
                 {
                     dbDataReader = await command.ExecuteReaderAsync(cancellationToken);
                     table.Load(dbDataReader);
-                    result = new Result(true, dbDataReader.RecordsAffected, null, JToken.FromObject(table));
+                    result = new Result(true, dbDataReader.RecordsAffected, JToken.FromObject(table));
                     await dbDataReader.CloseAsync();
                     await dbDataReader.DisposeAsync();
                     break;
                 }
                 dataObject = await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
-                result = new Result(true, (int)dataObject, null, JToken.FromObject(new { AffectedRows = dataObject }));
+                result = new Result(true, (int)dataObject, JToken.FromObject(new { AffectedRows = dataObject }));
                 break;
             case ExecuteTypes.NonQuery:
                 dataObject = await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
-                result = new Result(true, (int)dataObject, null, JToken.FromObject(new { AffectedRows = dataObject }));
+                result = new Result(true, (int)dataObject, JToken.FromObject(new { AffectedRows = dataObject }));
                 break;
             case ExecuteTypes.Scalar:
                 dataObject = await command.ExecuteScalarAsync(cancellationToken).ConfigureAwait(false);
-                result = new Result(true, 1, null, JToken.FromObject(new { Value = dataObject }));
+                result = new Result(true, 1, JToken.FromObject(new { Value = dataObject }));
                 break;
             case ExecuteTypes.ExecuteReader:
                 dbDataReader = (OdbcDataReader)await command.ExecuteReaderAsync(cancellationToken);
@@ -111,7 +106,7 @@ public class ODBC
                     break;
                 }
                 table.Load(dbDataReader);
-                result = new Result(true, dbDataReader.RecordsAffected, null, JToken.FromObject(table));
+                result = new Result(true, dbDataReader.RecordsAffected, JToken.FromObject(table));
                 await dbDataReader.CloseAsync();
                 await dbDataReader.DisposeAsync();
                 break;

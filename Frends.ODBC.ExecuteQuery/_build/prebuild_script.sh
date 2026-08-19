@@ -1,23 +1,15 @@
-﻿#!/bin/bash
-echo $PWD
-sudo su
+#!/bin/bash
+set -e
+
 sudo apt-get update
-sudo apt-get -y install curl
-sudo apt-get -y install gnupg
-sudo apt-get -y install mdbtools
-sudo apt-get -y install odbcinst
-sudo apt-get -y install lsb-release
+sudo apt-get install -y curl gnupg mdbtools odbcinst lsb-release unixodbc-dev
 
-sudo curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+sudo rm -f /etc/apt/sources.list.d/mssql-release.list
+sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
 
-curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list > ./mssql-release.list
+curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+curl -fsSL https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list > /dev/null
 
-sudo mv ./mssql-release.list /etc/apt/sources.list.d/mssql-release.list
-sudo ACCEPT_EULA=Y apt-get install -y --allow-unauthenticated msodbcsql17
-# optional: for bcp and sqlcmd
-sudo ACCEPT_EULA=Y apt-get install -y --allow-unauthenticated mssql-tools
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
-
-# optional: for unixODBC development headers
-sudo apt-get install -y unixodbc-dev
+sudo apt-get update
+sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc

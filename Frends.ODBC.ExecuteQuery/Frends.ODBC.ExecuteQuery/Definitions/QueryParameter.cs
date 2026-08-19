@@ -8,5 +8,6 @@ public class QueryParameter
     /// <summary>
     /// Parameter's value.
     /// </summary>
+    /// <example>Mammal</example>
     public dynamic Value { get; set; }
 }
