@@ -1,7 +1,8 @@
 # Changelog
 
-## [3.1.0] - 2026-08-17
+## [4.0.0] - 2026-08-17
 ### Fixed
+- [Breaking change] Remove string errorMessage property from Result class.
 - The task now returns structured error details in `Result.Error` when `ThrowErrorOnFailure` is disabled, instead of only a plain error string.
 - Added `ErrorMessageOnFailure` option to allow customising the error message thrown or returned on failure.
 

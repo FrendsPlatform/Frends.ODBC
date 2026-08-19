@@ -82,21 +82,21 @@ public static class ODBC
                 {
                     dbDataReader = await command.ExecuteReaderAsync(cancellationToken);
                     table.Load(dbDataReader);
-                    result = new Result(true, dbDataReader.RecordsAffected, null, JToken.FromObject(table));
+                    result = new Result(true, dbDataReader.RecordsAffected, JToken.FromObject(table));
                     await dbDataReader.CloseAsync();
                     await dbDataReader.DisposeAsync();
                     break;
                 }
                 dataObject = await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
-                result = new Result(true, (int)dataObject, null, JToken.FromObject(new { AffectedRows = dataObject }));
+                result = new Result(true, (int)dataObject, JToken.FromObject(new { AffectedRows = dataObject }));
                 break;
             case ExecuteTypes.NonQuery:
                 dataObject = await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
-                result = new Result(true, (int)dataObject, null, JToken.FromObject(new { AffectedRows = dataObject }));
+                result = new Result(true, (int)dataObject, JToken.FromObject(new { AffectedRows = dataObject }));
                 break;
             case ExecuteTypes.Scalar:
                 dataObject = await command.ExecuteScalarAsync(cancellationToken).ConfigureAwait(false);
-                result = new Result(true, 1, null, JToken.FromObject(new { Value = dataObject }));
+                result = new Result(true, 1, JToken.FromObject(new { Value = dataObject }));
                 break;
             case ExecuteTypes.ExecuteReader:
                 dbDataReader = (OdbcDataReader)await command.ExecuteReaderAsync(cancellationToken);
@@ -106,7 +106,7 @@ public static class ODBC
                     break;
                 }
                 table.Load(dbDataReader);
-                result = new Result(true, dbDataReader.RecordsAffected, null, JToken.FromObject(table));
+                result = new Result(true, dbDataReader.RecordsAffected, JToken.FromObject(table));
                 await dbDataReader.CloseAsync();
                 await dbDataReader.DisposeAsync();
                 break;

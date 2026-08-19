@@ -26,13 +26,6 @@ public class Result : IAsyncDisposable
     public int RecordsAffected { get; private set; }
 
     /// <summary>
-    /// Error message.
-    /// This value is generated when an exception occurs and Options.ThrowErrorOnFailure = false.
-    /// </summary>
-    /// <example>Error occured...</example>
-    public string ErrorMessage { get; private set; }
-
-    /// <summary>
     /// Error details. Null when Success is true.
     /// </summary>
     /// <example>null</example>
@@ -54,11 +47,10 @@ public class Result : IAsyncDisposable
     /// <example>DataReaderWrapper object</example>
     public DataReaderWrapper DataReader { get; init; }
 
-    internal Result(bool success, int recordsAffected, string errorMessage, dynamic data)
+    internal Result(bool success, int recordsAffected, dynamic data)
     {
         Success = success;
         RecordsAffected = recordsAffected;
-        ErrorMessage = errorMessage;
         Data = data;
     }
 
@@ -73,7 +65,6 @@ public class Result : IAsyncDisposable
     {
         Success = success;
         Error = error;
-        ErrorMessage = error?.Message;
     }
 
     internal void SetDisposableResources(OdbcConnection connection, OdbcCommand command)
